@@ -19,6 +19,16 @@ run-redis:
 		echo "Redis server is already running..."; \
 	fi
 
+stop-redis:
+	@container_id=$$(docker ps -aq --filter "publish=6379"); \
+	echo $$container_id; \
+	if [ -z "$$container_id" ]; then \
+		echo "Redis server is not running..."; \
+	else \
+		echo "Stopping redis server..."; \
+		docker stop ${REDIS_CONTAINER_NAME}; \
+	fi
+
 dev: run-redis ## Run the development server
 	@echo "Starting development server..."
 	@bun dev
